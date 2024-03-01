@@ -41,6 +41,7 @@ public static class ArraysTester
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
+        // @caiosabarros comments below:
         // create a list of double.
         List<double> numbers = new List<double> { };
         for (int n = 1; n <= length; n++)
@@ -70,5 +71,25 @@ public static class ArraysTester
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
+        // @caiosabarros comments below:
+        // KEY: get the last `amount` of elements and insert them at the front in the current list.
+        // Step 1: Do a for loop from (data.Count - `amount` + 1) up to data.Count, inserting each element at the position [0] up to [`amount` - 1].
+        int i = 0;
+        int begin = (data.Count - amount);
+
+        // Step2: store the initial length because as we're inserting, the list's growing, so we'd run into an infinite loop if we bound our loop till `data.Count`. 
+        int initialLength = data.Count;
+
+        for (int n = begin; n < initialLength; n++)
+        {
+            // Step3: insert the new element in position i.
+            data.Insert(i, data[n]);
+
+            // Step4: delete right after we insert accounting for the +1 change in the list's length.
+            data.RemoveAt(n + 1);
+
+            // Step5: increase the variable that tracks where we should insert the removed element
+            i = i + 1;
+        }
     }
 }
