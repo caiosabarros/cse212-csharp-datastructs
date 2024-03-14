@@ -1,5 +1,5 @@
 using System.Text.Json;
-
+using System.Text.RegularExpressions;
 public static class SetsAndMapsTester
 {
     public static void Run()
@@ -193,7 +193,72 @@ public static class SetsAndMapsTester
     private static bool IsAnagram(string word1, string word2)
     {
         // Todo Problem 3 - ADD YOUR CODE HERE
+        // For example, "CAT" and "ACT" are anagrams but "DOG" and "GOOD" are not
+        // When determining if two words are anagrams, you should ignore any spaces.
+        // You should ignore letter case. For example, 'Ab' and 'bA' should be considered anagrams.
+
+        // strip words
+        word1 = Regex.Replace(word1, @"\s", "").ToLower();
+        word2 = Regex.Replace(word2, @"\s", "").ToLower();
+
+        // check of the same length
+        int firstLength = word1.Length;
+        int secondLength = word2.Length;
+        if (firstLength != secondLength) return false;
+
+        // make first word an array
+        char[] firstWord = word1.ToCharArray();
+        var firstWordDict = new Dictionary<char, int>();
+        foreach (var item in firstWord)
+        {
+            try
+            {
+                int num = firstWordDict[item];
+                firstWordDict[item] = num + 1;
+            }
+            catch
+            {
+                firstWordDict[item] = 1;
+            }
+        }
+
+        // make second word an array
+        char[] secondWord = word2.ToCharArray();
+        var secondWordDict = new Dictionary<char, int>();
+        foreach (var item in secondWord)
+        {
+            try
+            {
+                int num = secondWordDict[item];
+                secondWordDict[item] = num + 1;
+            }
+            catch
+            {
+                secondWordDict[item] = 1;
+            }
+        }
+
+        if (CompareDict(firstWordDict, secondWordDict, word1)) return true;
         return false;
+    }
+
+    private static bool CompareDict(Dictionary<char, int> first, Dictionary<char, int> second, String word)
+    {
+        if (first.Count != second.Count) return false;
+        foreach (char letter in word)
+        {
+            // try's used because an error might be thrown if 
+            // letter isn't in one of the dictionaries.
+            try
+            {
+                if (first[letter] != second[letter]) return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /// <summary>
